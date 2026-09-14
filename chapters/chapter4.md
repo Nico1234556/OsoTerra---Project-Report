@@ -42,18 +42,20 @@ La capa de dominio de IAM contiene las reglas fundamentales de negocio independi
 | `AdvisoryLink` | Aggregate Root | Representa la vinculación autorizada entre un asesor y un productor. Es raíz independiente porque su ciclo de vida y sus reglas de consentimiento y revocación son autónomos respecto de las cuentas. |
 | `LinkStatus` | Enumeration | Define los estados de una vinculación: `PENDING`, `ACCEPTED` y `REVOKED`. |
 | `ProfessionalLicense` | Value Object | Encapsula el número de colegiatura del asesor técnico. |
+| `GoogleAccountId` | Value Object | Encapsula el identificador (`sub`) de la cuenta de Google vinculada, cuando el usuario opta por el inicio de sesión federado. |
 | `UserAccountRepository` | Repository (interfaz) | Abstracción de persistencia del agregado `UserAccount`. |
 | `AdvisoryLinkRepository` | Repository (interfaz) | Abstracción de persistencia del agregado `AdvisoryLink`. |
 | `PasswordHashingService` | Domain Service (interfaz) | Abstrae la política de hasheo de contraseñas, manteniendo el algoritmo fuera del dominio. |
-| `UserRegisteredEvent` | Domain Event | Se publica al crearse una cuenta. |
+| `GoogleTokenVerifier` | Domain Service (interfaz) | Abstrae la verificación criptográfica del ID Token emitido por Google, manteniendo el proveedor de identidad fuera del dominio. |
+| `UserRegisteredEvent` | Domain Event | Se publica al crearse una cuenta, ya sea por registro local o por primer inicio de sesión con Google. |
 | `AdvisoryLinkAcceptedEvent` | Domain Event | Se publica cuando el productor acepta la vinculación. |
 | `AdvisoryLinkRevokedEvent` | Domain Event | Se publica cuando el productor revoca la vinculación. |
 
-**Entities y Aggregates:** `UserAccount` actúa como raíz de agregado de la identidad, controlando el registro (`register()`), la verificación de credenciales (`verifyPassword()`), el cambio de contraseña y la desactivación de la cuenta. `AdvisoryLink` administra el ciclo `PENDING → ACCEPTED/REVOKED` mediante `request()`, `accept()` y `revoke()`, publicando el evento correspondiente en cada transición.
+**Entities y Aggregates:** `UserAccount` actúa como raíz de agregado de la identidad, controlando el registro local (`register()`), el registro o inicio de sesión federado (`registerWithGoogle()`, `linkGoogleAccount()`), la verificación de credenciales (`verifyPassword()`), el cambio de contraseña y la desactivación de la cuenta. Una cuenta puede autenticarse por credencial local, por Google, o por ambos métodos simultáneamente (`hasPassword()` y `hasGoogleAccountLinked()` son mutuamente independientes). `AdvisoryLink` administra el ciclo `PENDING → ACCEPTED/REVOKED` mediante `request()`, `accept()` y `revoke()`, publicando el evento correspondiente en cada transición.
 
-**Value Objects:** `EmailAddress`, `PasswordHash`, `PersonName` y `ProfessionalLicense` encapsulan las restricciones estructurales de cada dato, evitando que exista una instancia inválida en el sistema.
+**Value Objects:** `EmailAddress`, `PasswordHash`, `PersonName`, `ProfessionalLicense` y `GoogleAccountId` encapsulan las restricciones estructurales de cada dato, evitando que exista una instancia inválida en el sistema. `PasswordHash` es opcional en `UserAccount`: una cuenta creada exclusivamente vía Google no posee credencial local hasta que el usuario decida establecer una.
 
-**Ports (Interfaces):** `UserAccountRepository`, `AdvisoryLinkRepository` y `PasswordHashingService` definen las operaciones lógicas de almacenamiento y hasheo sin depender de tecnologías específicas como JPA o BCrypt.
+**Ports (Interfaces):** `UserAccountRepository`, `AdvisoryLinkRepository`, `PasswordHashingService` y `GoogleTokenVerifier` definen las operaciones lógicas de almacenamiento, hasheo y verificación de identidad federada sin depender de tecnologías específicas como JPA, BCrypt o el SDK de Google.
 
 #### 4.2.1.2. Interface Layer
 
@@ -62,14 +64,17 @@ La capa de interfaz expone las API REST del contexto acotado, traduciendo las pe
 | Clase | Categoría | Propósito |
 |---|---|---|
 | `AuthenticationController` | REST Controller | Expone los endpoints de registro, inicio de sesión, recuperación y restablecimiento de contraseña. |
+| `GoogleOAuthController` | REST Controller | Expone el inicio de sesión federado: recibe el ID Token emitido por Google y lo verifica para autenticar o registrar al usuario. |
 | `UserAccountController` | REST Controller | Expone la consulta y actualización del perfil del usuario autenticado. |
 | `AdvisoryLinkController` | REST Controller | Expone la solicitud, aceptación, revocación y listado de vinculaciones. |
-| `SignUpResource` / `SignInResource` | Resource (DTO) | Representan la carga de entrada del registro y la autenticación. |
-| `AuthenticatedUserResource` | Resource (DTO) | Representa la respuesta de autenticación, incluyendo el token y su expiración. |
+| `SignUpResource` / `SignInResource` | Resource (DTO) | Representan la carga de entrada del registro y la autenticación local. |
+| `GoogleSignInResource` | Resource (DTO) | Carga de entrada del inicio de sesión federado: el ID Token entregado por el cliente (Web/Mobile) tras autenticarse con Google. |
+| `AuthenticatedUserResource` | Resource (DTO) | Representa la respuesta de autenticación, incluyendo el token y su expiración, sin importar el método usado. |
 | `UserAccountResource` / `AdvisoryLinkResource` | Resource (DTO) | Representan la cuenta y la vinculación expuestas al cliente, sin datos sensibles. |
 | `UserAccountResourceAssembler` | Assembler | Traduce entre el agregado y su representación de salida. |
 
 *   **AuthenticationController:** Expone `sign-up`, `sign-in`, solicitud y confirmación de restablecimiento de contraseña.
+*   **GoogleOAuthController:** Expone `POST /auth/google` para recibir el ID Token que el cliente obtiene directamente del SDK de Google (Web/Mobile), delegando su verificación a la capa de aplicación.
 *   **AdvisoryLinkController:** Expone la solicitud, aceptación y revocación de una vinculación, y el listado de vinculaciones activas por productor/asesor.
 *   **UserAccountController:** Expone la consulta del perfil del usuario autenticado.
 
@@ -81,6 +86,7 @@ Esta capa orquesta los casos de uso del contexto, coordinando el dominio con los
 |---|---|---|
 | `RegisterUserCommandHandler` | Command Handler | Orquesta el alta de una cuenta: verifica la unicidad del correo, delega el hasheo y persiste el agregado. |
 | `AuthenticateUserCommandHandler` | Command Handler | Verifica las credenciales y emite el token de acceso. |
+| `AuthenticateWithGoogleCommandHandler` | Command Handler | Verifica el ID Token vía `GoogleTokenVerifier` y resuelve la cuenta: la vincula si ya existe por correo, la crea si es la primera vez, o solo emite el token si ya estaba vinculada. |
 | `RequestPasswordResetCommandHandler` | Command Handler | Genera el token de restablecimiento y solicita el envío del correo. |
 | `ResetPasswordCommandHandler` | Command Handler | Valida el token y reemplaza la credencial. |
 | `RequestAdvisoryLinkCommandHandler` | Command Handler | Crea la solicitud de vinculación. |
@@ -97,6 +103,7 @@ La capa de infraestructura implementa las interfaces de dominio (puertos) y prov
 | `JpaUserAccountRepository` | Repository Implementation | Implementa `UserAccountRepository` sobre Spring Data JPA. |
 | `JpaAdvisoryLinkRepository` | Repository Implementation | Implementa `AdvisoryLinkRepository` sobre Spring Data JPA. |
 | `BCryptPasswordHashingService` | Domain Service Implementation | Implementa `PasswordHashingService` mediante el algoritmo BCrypt. |
+| `GoogleIdTokenVerifierAdapter` | Anti-corruption Layer | Implementa `GoogleTokenVerifier` mediante la librería cliente de Google, validando la firma, el emisor y la audiencia (Client ID) del ID Token. |
 | `JwtTokenService` | Infrastructure Service | Emite y valida los tokens de acceso (JWT). |
 | `SmtpEmailNotificationService` | Anti-corruption Layer | Traduce las solicitudes de envío de correo al modelo del proveedor SMTP. |
 | `SecurityConfiguration` | Configuration | Configura los filtros de autenticación y la política de autorización por rol. |
@@ -110,11 +117,12 @@ Dentro del contenedor **RESTful API**, el contexto acotado de **Identity and Acc
 <p><em>Component Diagram del bounded context Identity and Access Management.</em></p>
 </div>
 
-*   **Authentication / Advisory Link Controllers:** Reciben las solicitudes HTTP/HTTPS de la Web Application y la Mobile Application.
+*   **Authentication / Google OAuth / Advisory Link Controllers:** Reciben las solicitudes HTTP/HTTPS de la Web Application y la Mobile Application, incluyendo el ID Token del inicio de sesión federado.
 *   **User / Advisory Link Command Handlers y User Query Service:** Orquestan los casos de uso de identidad, invocando el modelo de dominio y los repositorios.
-*   **Identity Domain Model:** Contiene `UserAccount`, `AdvisoryLink` y sus invariantes.
+*   **Identity Domain Model:** Contiene `UserAccount`, `AdvisoryLink` y sus invariantes, incluyendo la vinculación opcional a una cuenta de Google.
 *   **User Account Repository / Advisory Link Repository:** Adaptadores Spring Data JPA hacia la base de datos de la plataforma.
 *   **JWT Token Service y Password Hashing Service:** Encapsulan la emisión de tokens y el hasheo de contraseñas.
+*   **Google Token Verifier ACL:** Traduce la verificación del ID Token hacia el servicio externo de Google OAuth2.
 *   **Email Notification ACL:** Traduce las solicitudes de envío de correo hacia el proveedor SMTP externo.
 
 #### 4.2.1.6. Bounded Context Software Architecture Code Level Diagrams
@@ -135,9 +143,13 @@ A continuación, el diagrama de clases unificado de la capa de dominio del conte
 <p><em>Database Diagram del bounded context Identity and Access Management.</em></p>
 </div>
 
-Las tablas principales asociadas a este contexto son `USER_ACCOUNTS`, `ADVISORY_LINKS` y `PASSWORD_RESET_TOKENS`. `USER_ACCOUNTS` almacena el correo (único), la credencial hasheada, el nombre, el rol (`FARMER`/`ADVISOR`) y, cuando corresponde, la colegiatura del asesor. `ADVISORY_LINKS` referencia a dos cuentas (asesor y productor) y su estado (`PENDING`, `ACCEPTED`, `REVOKED`). `PASSWORD_RESET_TOKENS` registra los tokens de restablecimiento emitidos y su vigencia.
+Las tablas principales asociadas a este contexto son `USER_ACCOUNTS`, `ADVISORY_LINKS` y `PASSWORD_RESET_TOKENS`. `USER_ACCOUNTS` almacena el correo (único), el nombre, el rol (`FARMER`/`ADVISOR`) y, cuando corresponde, la colegiatura del asesor. `ADVISORY_LINKS` referencia a dos cuentas (asesor y productor) y su estado (`PENDING`, `ACCEPTED`, `REVOKED`). `PASSWORD_RESET_TOKENS` registra los tokens de restablecimiento emitidos y su vigencia.
 
-**Restricciones adicionales:** índice único compuesto sobre `(advisor_id, farmer_id)` en `ADVISORY_LINKS`, limitado a los registros con estado distinto de `REVOKED`, a fin de impedir vinculaciones activas duplicadas entre el mismo asesor y productor.
+**Soporte de inicio de sesión federado:** `USER_ACCOUNTS` incorpora las columnas `password_hash`/`hash_algorithm` como **nullables** (una cuenta creada exclusivamente vía Google no posee credencial local) y una columna `google_account_id VARCHAR(255) NULL UNIQUE` que almacena el identificador (`sub`) de la cuenta de Google vinculada, cuando aplica.
+
+**Restricciones adicionales:** índice único compuesto sobre `(advisor_id, farmer_id)` en `ADVISORY_LINKS`, limitado a los registros con estado distinto de `REVOKED`, a fin de impedir vinculaciones activas duplicadas entre el mismo asesor y productor. `CHECK (password_hash IS NOT NULL OR google_account_id IS NOT NULL)` garantiza que toda cuenta tenga al menos un método de autenticación.
+
+> **Nota:** el ERD (`assets/architecture-db/IAM.png`) fue generado antes de esta incorporación y debe actualizarse manualmente en la herramienta ERD para reflejar las columnas `google_account_id` y la nulabilidad de `password_hash`/`hash_algorithm`.
 
 ---
 
@@ -173,20 +185,20 @@ La capa de dominio de Subscription and Billing garantiza que exista una única s
 
 #### 4.2.2.2. Interface Layer
 
-La capa de interfaz expone el catálogo de planes, la gestión de la suscripción del usuario y el webhook de confirmación asíncrona de la pasarela de pago.
+La capa de interfaz expone el catálogo de planes, la gestión de la suscripción del usuario y el webhook de confirmación asíncrona de Stripe.
 
 | Clase | Categoría | Propósito |
 |---|---|---|
 | `SubscriptionController` | REST Controller | Expone la selección de plan, la consulta del estado, la renovación y la cancelación. |
 | `SubscriptionPlanController` | REST Controller | Expone el catálogo público de planes. |
-| `PaymentWebhookController` | REST Controller | Recibe las confirmaciones asíncronas de la pasarela de pago. |
+| `PaymentWebhookController` | REST Controller | Recibe las confirmaciones asíncronas de Stripe (webhook). |
 | `SubscribeResource` | Resource (DTO) | Carga de entrada de la selección de plan. |
 | `SubscriptionResource` | Resource (DTO) | Representación de la suscripción expuesta al cliente. |
 | `SubscriptionPlanResource` | Resource (DTO) | Representación de un plan del catálogo. |
 
 *   **SubscriptionController:** Expone la contratación de plan, cancelación y renovación, y la consulta del estado vigente.
 *   **SubscriptionPlanController:** Expone el catálogo público de planes (nombre, precio, ciclo y cupo de parcelas).
-*   **PaymentWebhookController:** Endpoint de Open Host Service que recibe las notificaciones asíncronas de la pasarela de pago.
+*   **PaymentWebhookController:** Endpoint de Open Host Service que recibe las notificaciones asíncronas de Stripe (webhook).
 
 #### 4.2.2.3. Application Layer
 
@@ -195,7 +207,7 @@ Esta capa orquesta la contratación, confirmación de pago, renovación, cancela
 | Clase | Categoría | Propósito |
 |---|---|---|
 | `SubscribeToPlanCommandHandler` | Command Handler | Orquesta la contratación de un plan, distinguiendo el flujo gratuito del de pago. |
-| `ConfirmPaymentCommandHandler` | Command Handler | Procesa la confirmación de la pasarela y activa la suscripción. |
+| `ConfirmPaymentCommandHandler` | Command Handler | Procesa la confirmación de Stripe y activa la suscripción. |
 | `CancelSubscriptionCommandHandler` | Command Handler | Registra la cancelación programada. |
 | `RenewSubscriptionCommandHandler` | Command Handler | Ejecuta la renovación del periodo. |
 | `ConsumeQuotaCommandHandler` | Command Handler | Reserva un cupo de parcela a solicitud de Farm Management. |
@@ -205,13 +217,13 @@ Esta capa orquesta la contratación, confirmación de pago, renovación, cancela
 
 #### 4.2.2.4. Infrastructure Layer
 
-La capa de infraestructura implementa la persistencia del catálogo y las suscripciones, la traducción hacia la pasarela de pago externa y la tarea programada de expiración.
+La capa de infraestructura implementa la persistencia del catálogo y las suscripciones, la traducción hacia Stripe y la tarea programada de expiración.
 
 | Clase | Categoría | Propósito |
 |---|---|---|
 | `JpaSubscriptionRepository` | Repository Implementation | Implementa `SubscriptionRepository` sobre Spring Data JPA. |
 | `JpaSubscriptionPlanRepository` | Repository Implementation | Implementa `SubscriptionPlanRepository` sobre Spring Data JPA. |
-| `ExternalPaymentGatewayAdapter` | Anti-corruption Layer | Implementa `PaymentGateway` traduciendo entre el modelo del dominio y el de la pasarela externa. |
+| `StripePaymentGatewayAdapter` | Anti-corruption Layer | Implementa `PaymentGateway` traduciendo entre el modelo del dominio y el de Stripe. |
 | `SubscriptionExpirationScheduler` | Scheduled Job | Evalúa periódicamente las suscripciones vencidas y dispara su suspensión. |
 
 #### 4.2.2.5. Bounded Context Software Architecture Component Level Diagrams
@@ -223,11 +235,11 @@ Dentro del contenedor **RESTful API**, el contexto acotado de **Subscription and
 <p><em>Component Diagram del bounded context Subscription and Billing.</em></p>
 </div>
 
-*   **Subscription / Subscription Plan / Payment Webhook Controllers:** Reciben las solicitudes de la Web Application y las confirmaciones de la pasarela de pago externa.
+*   **Subscription / Subscription Plan / Payment Webhook Controllers:** Reciben las solicitudes de la Web Application y las confirmaciones de Stripe.
 *   **Subscription Command Handlers y Quota Command Handlers:** Orquestan la contratación, pago, renovación, cancelación y el consumo/liberación de cupo.
 *   **Billing Domain Model:** Contiene `Subscription`, `PlotQuota` y `SubscriptionPlan` con sus invariantes.
 *   **Subscription Repository:** Adaptador Spring Data JPA hacia la base de datos de la plataforma.
-*   **Payment Gateway ACL:** Traduce el cobro hacia la pasarela de pago externa.
+*   **Stripe Payment Gateway ACL:** Traduce el cobro hacia Stripe.
 *   **Expiration Scheduler:** Evalúa periódicamente los periodos vencidos y dispara la suspensión, propagando `SubscriptionSuspendedEvent` hacia Soil Monitoring.
 
 #### 4.2.2.6. Bounded Context Software Architecture Code Level Diagrams
