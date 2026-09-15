@@ -363,34 +363,65 @@ Como parte del análisis del proceso de needfinding, se desarrollaron user perso
 
 Estas herramientas ayudan a traducir los datos de campo en perfiles accionables, orientando las decisiones estratégicas sobre las funcionalidades y la priorización técnica del producto. Las personas creadas reflejan las necesidades urgentes de detección temprana, accesibilidad tecnológica y monitoreo continuo, facilitando un diseño más empático, comprensible y efectivo para OsoSense.
 
-**Persona 1:** Productor Agrícola Tradicional
-- **Nombre:** José Gutierrez
-- **Edad:** 55 años
-- **Ocupación:** Pequeño productor agropecuario de arroz/maíz (< 5 hectáreas)
-- **Ubicación:** Valle agrícola del Chira, Piura
-- **Perfil:** Administra su parcela basándose en la experiencia heredada y prácticas convencionales. Es pragmático, adverso al riesgo y muy cauteloso con su inversión. Su alfabetización digital es básica (centrada en WhatsApp y Facebook en un smartphone de gama de entrada). Confía firmemente en el criterio de sus asesores técnicos presenciales antes que en la innovación tecnológica por sí sola.
-- **Background:** Tras años de trabajo en el campo, Don José depende de su intuición y del riego poco tecnificado para manejar su cultivo, el cual representa el único sustento económico de su familia al no contar con acceso a crédito formal. Jamás ha realizado un análisis de suelo porque los laboratorios implican costos elevados por muestra y tiempos de espera de varias semanas. Actualmente, gestiona su campo "a ciegas" respecto al avance de la salinización, reaccionando únicamente cuando el marchitamiento de las plantas ya es un problema irreversible en la campaña.
+**Persona 1:** Familiar joven involucrado en la gestión agrícola
+- **Nombre:** Diego Ramos
+- **Edad:** 20 años
+- **Ocupación:** Estudiante universitario y apoyo en la gestión de una parcela familiar
+- **Ubicación:** Lima, Perú
+- **Zona de la parcela:** Huaral, Cañete o Chancay, por confirmar en la entrevista
+- **Rol:** Familiar joven que ayuda a coordinar y supervisar actividades agrícolas desde Lima
+- **Perfil:** Tiene facilidad para utilizar aplicaciones móviles, pero sus conocimientos sobre salinidad, conductividad eléctrica y análisis de suelo son básicos. Aunque no permanece diariamente en el campo, mantiene comunicación con sus familiares y participa en la coordinación de actividades, compra de insumos y seguimiento de la parcela.
+- **Background:** Diego vive en Lima y mantiene relación con una parcela familiar ubicada en una zona agrícola cercana. Visita el campo de manera ocasional y depende principalmente de llamadas y mensajes para conocer el estado del cultivo. Cuando aparece un problema, consulta a un familiar con más experiencia o a un asesor agrícola. Su interés es utilizar la tecnología para informarse a distancia y ayudar a su familia a actuar antes de que un problema del suelo afecte el cultivo.
+
+**Tecnologías:**
+* Teléfono celular Android.
+* WhatsApp y llamadas telefónicas.
+* YouTube y Google para buscar información.
+* Google Maps y cámara del celular.
+* Internet móvil, sujeto a la conectividad disponible en la zona agrícola.
+
+**Skills:**
+* Manejo básico de aplicaciones móviles.
+* Comunicación mediante WhatsApp y llamadas.
+* Búsqueda de información en internet.
+* Registro de información mediante fotografías y mensajes.
+* Coordinación de actividades con familiares.
+* Aprendizaje rápido de herramientas digitales.
+* Conocimientos básicos sobre las actividades de la parcela.
+* Capacidad para comunicar problemas al asesor o familiar encargado.
 
 **Motivaciones:**
-* Proteger la inversión económica de su actual campaña agrícola (su principal fuente de ingresos familiares).
-* Sentir mayor certidumbre y control sobre el rendimiento de su tierra, dejando de depender de la suerte o la intuición.
-* Evitar el gasto inútil en fertilizantes o agua extra, el cual ocurre cuando asume erróneamente las causas del bajo rendimiento.
-* Contar con el respaldo y la validación de un ingeniero agrónomo que certifique que las herramientas que usa realmente funcionan.
+* Apoyar a su familia en la gestión de la parcela.
+* Evitar pérdidas en el cultivo.
+* Aprovechar la tecnología para resolver problemas reales.
+* Aprender más sobre agricultura.
+* Tener mayor control sobre lo que ocurre en la parcela aunque se encuentre en Lima.
 
 **Frustraciones:**
-* Detectar los efectos perjudiciales de la salinidad únicamente cuando el daño ya es visible en el menor vigor de sus plantas o en los parches secos de la parcela.
-* Percibir que las soluciones actuales de agricultura de precisión son inalcanzables, complejas y están diseñadas exclusivamente para la gran agroexportación.
-* Verse obligado a tomar decisiones críticas sobre riego o aplicación de agroquímicos basándose únicamente en síntomas reactivos y no en datos actuales.
+* No poder estar presente en la parcela todos los días.
+* Recibir información tarde o incompleta.
+* No comprender fácilmente los términos técnicos del suelo.
+* Depender de otras personas para conocer el estado del cultivo.
+* No saber si un problema se debe a salinidad, falta de nutrientes o exceso de agua.
+* Encontrar poca conectividad en la zona agrícola.
 
 **Objetivos:**
-* Identificar el riesgo de salinización de manera temprana para ejecutar acciones correctivas antes de que se comprometa toda la cosecha.
-* Recibir alertas del suelo traducidas a un lenguaje visual, directo y accionable (ej. sistema de semáforos), sin tener que interpretar medidas técnicas como la conductividad eléctrica.
-* Lograr diferenciar con exactitud si la pérdida de productividad de sus plantas se debe a la acumulación de sales o a la falta de nutrientes.
-* Acceder a una tecnología de bajo costo que incluya un plan gratuito inicial, permitiéndole probar el servicio en una parcela sin asumir barreras económicas de entrada.
+* Conocer el estado de la parcela sin visitarla diariamente.
+* Detectar problemas antes de que afecten el cultivo.
+* Recibir información clara y fácil de entender.
+* Compartir las alertas con su familia o un asesor técnico.
+* Coordinar rápidamente una acción cuando se detecte un problema.
 
-<p>
+**Necesidades:**
+* Alertas accesibles desde el celular.
+* Explicaciones visuales y sencillas.
+* Historial de mediciones por parcela.
+* Ubicación, fecha y hora de cada medición.
+* Recomendaciones sobre qué hacer después de una alerta.
+* Posibilidad de compartir la información por WhatsApp.
 
-![](https://i.imgur.com/t3BF22L.png)
+**Problema principal:**
+> Diego no puede supervisar constantemente la parcela porque vive en Lima. Cuando recibe información sobre un problema del suelo, puede ser demasiado tarde para actuar.
 
 
 ### 2.3.2. User Task Matrix
