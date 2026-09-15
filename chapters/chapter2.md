@@ -423,6 +423,10 @@ Estas herramientas ayudan a traducir los datos de campo en perfiles accionables,
 **Problema principal:**
 > Diego no puede supervisar constantemente la parcela porque vive en Lima. Cuando recibe información sobre un problema del suelo, puede ser demasiado tarde para actuar.
 
+<div align="center">
+<img src="../assets/user-persona/userpersona1.png" alt="User Persona 1: Diego Ramos" width="800">
+<p><em>Figura. User Persona 1: Diego Ramos.</em></p>
+</div>
 
 ### 2.3.2. User Task Matrix
 
