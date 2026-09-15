@@ -26,7 +26,7 @@ El nombre **Oso Terra** combina la idea de vigilancia y resistencia asociada al 
 
 | Foto del estudiante | Nombres y apellidos | Código de estudiante | Descripción |
 |---|---|---|---|
-| <img src="../assets/members/u202318049.jpg" alt="Goñe Araccata, Esther Abigail" width="100"> | Goñe Araccata, Esther Abigail | u202318049 | Estudiante de Ingeniería de Software. Participa en la elaboración del informe, análisis del problema y organización de los artefactos del proyecto OsoSense. |
+| ![](https://i.imgur.com/GByNzjm.png) | Goñe Araccata, Esther Abigail | u202318049 | Estudiante de Ingeniería de Software. Participa en la elaboración del informe, análisis del problema y organización de los artefactos del proyecto OsoSense. |
 | <img src="../assets/members/u202321941.jpg" alt="Salazar Caballero, Alvaro Fabrizzio" width="100"> | Salazar Caballero, Alvaro Fabrizzio | u202321941 | Estudiante de Ingeniería de Software. Contribuye en la investigación del contexto agrícola, definición de requerimientos y documentación de la solución IoT. |
 | <img src="../assets/members/u20211g481.jpg" alt="Encalada Salazar, Alexis" width="100"> | Encalada Salazar, Alexis | u20211g481 | Estudiante de Ingeniería de Software. Apoya en el desarrollo conceptual del producto, revisión de secciones del informe y análisis de necesidades de usuarios. |
 | <img src="../assets/members/u202312899.jpg" alt="Ortiz Alarcon, Victor Nicolas" width="100"> | Ortiz Alarcon, Victor Nicolas | u202312899 | Estudiante de Ingeniería de Software. Participa en la estructuración del repositorio, redacción del Capítulo I y organización de la documentación del proyecto. |
