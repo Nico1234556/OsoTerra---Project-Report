@@ -432,20 +432,123 @@ Estas herramientas ayudan a traducir los datos de campo en perfiles accionables,
 
 ## 2.4. Big Picture EventStorming
 
-El equipo realizó un Big Picture EventStorming para entender el dominio general de OsoTerra IoT y representar visualmente los eventos principales del negocio. La sesión permitió ordenar el flujo desde el registro de la parcela hasta la generación de alertas, el registro de acciones correctivas y la validación del dispositivo con resultados de laboratorio.
+El equipo realizó un Big Picture EventStorming para comprender el dominio completo de OsoTerra IoT antes de especificar requisitos y diseñar la solución. El objetivo fue construir una visión compartida del negocio de monitoreo de salinidad del suelo: qué ocurre desde que un productor o un asesor técnico llega a la plataforma hasta que se toma una acción correctiva en la parcela, qué personas y sistemas participan, dónde están los principales problemas y qué oportunidades puede aprovechar la solución.
 
-Durante la sesión se usaron post-its diferenciados por tipo: usuarios, comandos, eventos, riesgos, información y sistemas de negocio. Los eventos se organizaron de izquierda a derecha siguiendo la secuencia temporal del proceso.
+La sesión se trabajó de forma colaborativa en FigJam y se apoyó en la información ya obtenida en capítulos anteriores: el problema y los segmentos objetivo del Capítulo I, las hipótesis del Lean UX Process, el análisis de competidores, las guías y el registro de entrevistas, y los términos del dominio agronómico. Se siguió la guía paso a paso de Big Picture EventStorming indicada en el enunciado (https://bit.ly/bpes-guide) y la notación del *EventStorming Glossary & Cheat Sheet* de ddd-crew.
 
-**URL del board:** [Event storming - Copia](https://www.figma.com/board/rOz6aC8xPFPeAZt5nTztdW/Event-storming--Copia-?node-id=0-1&t=jHZC7lXyvDzyzoJK-1)
+**Notación utilizada**
+
+| Elemento | Color | Uso en la sesión |
+|---|---|---|
+| Domain Event | Naranja | Hecho relevante para el negocio, redactado en pasado (por ejemplo, *Soil Reading Stored*). |
+| Actor | Amarillo | Persona o rol que ejecuta una acción o se ve afectado por un evento. |
+| External System | Rosado | Sistema de software, interno o de terceros, que interviene en el proceso. |
+| HotSpot | Rojo | Duda, conflicto, fricción o riesgo detectado. |
+| Opportunity | Verde | Mejora que la solución puede aprovechar. |
+| Pivotal Event | Naranja con barra roja | Evento que marca un cambio de etapa en el negocio. |
+
+El proceso se desarrolló en cinco etapas. Cada etapa se construyó sobre la anterior, por lo que las figuras muestran la evolución progresiva del mismo tablero.
+
+**Etapa 1: Chaotic Exploration**
+
+En la primera etapa cada integrante escribió, sin ordenar ni discutir, todos los eventos de dominio que conocía del negocio. Se aceptaron duplicados, sinónimos y términos imprecisos, ya que el propósito era obtener la mayor cantidad posible de hechos relevantes en poco tiempo.
 
 <div align="center">
-<img src="../assets/eventstorming/Event-Storming-IoT.jpeg" alt="Big Picture EventStorming de OsoTerra IoT en FigJam" width="900"/>
-<p><em>Figura 11. Big Picture EventStorming de OsoTerra IoT elaborado en FigJam.</em></p>
+<img src="../assets/eventstorming/big-picture-stage-1-chaotic-exploration.png" alt="Etapa 1 del Big Picture EventStorming: Chaotic Exploration" width="900"/>
+<p><em>Figura 11. Big Picture EventStorming, etapa 1: Chaotic Exploration.</em></p>
 </div>
 
-La figura muestra los actores principales del dominio, como el productor agropecuario, el asesor técnico, el dispositivo IoT, la plataforma OsoTerra y el laboratorio de suelo. También presenta eventos clave como `PlotRegistered`, `DeviceInstalledInPlot`, `SoilReadingCaptured`, `SalinityAlertGenerated`, `CorrectiveActionRegistered` y `DeviceCalibrated`.
+El resultado fueron 43 post-its de eventos. Entre ellos aparecieron duplicados como *PlotCreated* y *PlotRegistered*, *SensorInstalled* y *DeviceInstalledInPlot*, *ReadingSaved* y *SoilReadingStored*, *AlertSent* y *AlertNotificationSent*, y *UserSignedUp* y *AccountRegistered*. También apareció una acción escrita como evento (*PlanChosen*) y un detalle de una acción (*SaltLeachingApplied*), que se revisaron en la etapa siguiente.
 
-Como resultado del análisis se identificaron puntos de dolor relacionados con la conectividad en campo, la interpretación de lecturas técnicas y la confianza en el dispositivo. Asimismo, se identificaron oportunidades como el uso de alertas simples, el historial de salinidad, los reportes para asesores y la validación con laboratorio.
+**Etapa 2: Enforce the Timeline**
+
+En la segunda etapa el equipo ordenó los eventos de izquierda a derecha según el momento en que ocurren, eliminó duplicados y unificó los nombres con el Ubiquitous Language de la sección 2.5. Luego agrupó los eventos en once fases del negocio. La línea de tiempo continúa de la primera fila a la segunda.
+
+<div align="center">
+<img src="../assets/eventstorming/big-picture-stage-2-enforce-timeline.png" alt="Etapa 2 del Big Picture EventStorming: Enforce the Timeline" width="900"/>
+<p><em>Figura 12. Big Picture EventStorming, etapa 2: Enforce the Timeline.</em></p>
+</div>
+
+Las fases identificadas y sus eventos son las siguientes:
+
+| Fase | Eventos |
+|---|---|
+| F1. Acceso y suscripción | Account Registered, Subscription Activated, Payment Confirmed |
+| F2. Configuración agrícola | Farm Registered, Plot Registered, Crop Assigned To Plot |
+| F3. Instalación del dispositivo | Device Registered, Device Installed In Plot |
+| F4. Vinculación del asesor | Advisory Link Requested, Advisory Link Accepted |
+| F5. Monitoreo en campo (Edge) | Soil Reading Captured, Temperature Compensation Applied, Reading Buffered, Buffered Readings Synchronized |
+| F6. Ingesta en la plataforma | Reading Batch Ingested, Soil Reading Stored, Device Went Offline |
+| F7. Alerta de salinidad | Threshold Exceeded, Salinity Alert Generated, Alert Notification Sent, Alert Acknowledged |
+| F8. Acción correctiva | Corrective Action Registered, Alert Resolved |
+| F9. Calibración con laboratorio | Soil Sample Sent To Lab, Lab Result Registered, Device Calibrated |
+| F10. Análisis y reportes | Weather Data Retrieved, Salinity Trend Computed, Plot Report Generated, Plot Report Exported |
+| F11. Ciclo de vida de la suscripción | Subscription Renewed, Subscription Suspended, Advisory Link Revoked, Plot Deactivated |
+
+La depuración dejó 35 eventos. Los duplicados se unificaron con el nombre del glosario; *PlanChosen* se descartó como evento porque corresponde a la acción de suscribirse a un plan; *SaltLeachingApplied* pasó a ser un tipo de *Corrective Action Registered*; y *CropCatalogUpdated* quedó fuera de la línea principal, porque el catálogo de cultivos y sus umbrales de Maas y Hoffman se administran de forma centralizada.
+
+**Etapa 3: People and External Systems**
+
+En la tercera etapa se ubicaron, encima de cada fase, las personas que ejecutan o se ven afectadas por los eventos y los sistemas que intervienen en ellos.
+
+<div align="center">
+<img src="../assets/eventstorming/big-picture-stage-3-people-systems.png" alt="Etapa 3 del Big Picture EventStorming: People and External Systems" width="900"/>
+<p><em>Figura 13. Big Picture EventStorming, etapa 3: People and External Systems.</em></p>
+</div>
+
+Los actores principales son los dos segmentos objetivo del Capítulo I, el **Agricultural Producer** y el **Agronomist Advisor**. También participan actores técnicos que originan eventos, como el **IoT Device (ESP32)** y el **Edge Service**, y el **Billing Scheduler**, que representa el paso del tiempo en la renovación de suscripciones. Entre los sistemas aparecen los componentes propios de la solución (OsoSense Web / Mobile App, OsoSense Edge Service y OsoSense RESTful API) y los sistemas de terceros: **Stripe** para los pagos, **Google OAuth2** para el inicio de sesión, un proveedor de notificaciones push y correo, el **Soil Laboratory** acreditado y un **Weather Service API**. Esta etapa hizo visibles las dependencias externas que la solución debe integrar.
+
+**Etapa 4: Problems and Opportunities**
+
+En la cuarta etapa el equipo marcó debajo de cada fase los HotSpots y las Opportunities. Los HotSpots se basaron en los hallazgos de las entrevistas, en las estadísticas de los segmentos y en el análisis de competidores.
+
+<div align="center">
+<img src="../assets/eventstorming/big-picture-stage-4-problems-opportunities.png" alt="Etapa 4 del Big Picture EventStorming: Problems and Opportunities" width="900"/>
+<p><em>Figura 14. Big Picture EventStorming, etapa 4: Problems and Opportunities.</em></p>
+</div>
+
+| Fase | HotSpots | Opportunities |
+|---|---|---|
+| F1. Acceso y suscripción | Baja capacidad de pago del productor (8 % con acceso a crédito formal). | Plan gratuito limitado a una parcela. |
+| F2. Configuración agrícola | Parcelas con más de un cultivo en la misma campaña. | Umbral contextualizado por cultivo (Maas y Hoffman). |
+| F3. Instalación del dispositivo | Instalación física sin soporte técnico en campo. | Dispositivo compartido por asociación de productores. |
+| F4. Vinculación del asesor | Privacidad de los datos de la parcela frente al asesor. | El asesor como canal de adopción y aval de confianza. |
+| F5. Monitoreo en campo | Conectividad intermitente; baja humedad que distorsiona la conductividad eléctrica. | Buffer local y sincronización diferida. |
+| F6. Ingesta en la plataforma | Reenvíos duplicados al restablecerse la conectividad. | Detección de dispositivos fuera de línea. |
+| F7. Alerta de salinidad | El productor no interpreta valores en dS/m; fatiga por exceso de alertas. | Alerta en lenguaje simple con severidad; aviso simultáneo a productor y asesor. |
+| F8. Acción correctiva | Dificultad para verificar si la acción funcionó. | Historial de acciones correctivas. |
+| F9. Calibración con laboratorio | Desconfianza en un sensor de bajo costo. | Laboratorio como aliado de validación. |
+| F10. Análisis y reportes | Indisponibilidad del servicio meteorológico. | Reportes exportables para el asesor; tendencia como indicador temprano. |
+| F11. Ciclo de vida de la suscripción | Tratamiento de las lecturas generadas durante una suspensión. | Renovación sin intervención manual. |
+
+**Etapa 5: Pivotal Events and Emerging Boundaries**
+
+En la quinta etapa se identificaron los eventos pivote, es decir, los pocos eventos de mayor interés para el negocio que marcan un cambio de etapa. Cada evento pivote se señaló con una barra roja. A partir de ellos y de las fases se trazaron las fronteras emergentes, representadas con bandas en la parte inferior de cada fila.
+
+<div align="center">
+<img src="../assets/eventstorming/big-picture-stage-5-pivotal-events.png" alt="Etapa 5 del Big Picture EventStorming: Pivotal Events and Emerging Boundaries" width="900"/>
+<p><em>Figura 15. Big Picture EventStorming, etapa 5: Pivotal Events and Emerging Boundaries.</em></p>
+</div>
+
+| Evento pivote | Cambio de etapa que representa |
+|---|---|
+| Subscription Activated | El visitante pasa a ser un usuario con un plan y un cupo de parcelas. |
+| Device Installed In Plot | La parcela queda descrita (cultivo y umbral) y lista para ser monitoreada. |
+| Soil Reading Stored | El suelo produce datos confiables y continuos en la plataforma. |
+| Salinity Alert Generated | El dato se interpreta según el cultivo y se convierte en un riesgo que llega a las personas. |
+| Corrective Action Registered | El ciclo de atención se cierra y la información pasa al historial y a los reportes. |
+
+Las fronteras emergentes identificadas fueron: **Identity and Access** y **Subscription and Billing** (F1, F4 y F11), **Farm Management** (F2 y F3), **Soil Monitoring** (F5, F6 y la calibración de F9), **Salinity Alerting** (F7 y F8) y **Analytics and Reporting** (F10).
+
+**Resultados del Big Picture EventStorming**
+
+- Se obtuvo una línea de tiempo única de 35 eventos de dominio en once fases, con nombres alineados al Ubiquitous Language.
+- Se confirmó que el **Agricultural Producer** y el **Agronomist Advisor** son los actores centrales del negocio, y que la solución depende de cinco sistemas de terceros.
+- Los principales riesgos son la conectividad en campo, la interpretación de lecturas técnicas por parte del productor, la confianza en un dispositivo de bajo costo y la capacidad de pago del segmento principal.
+- Las principales oportunidades son las alertas en lenguaje simple contextualizadas por cultivo, el buffer local con sincronización diferida, el historial y la tendencia de salinidad, los reportes para asesores y la validación con laboratorio.
+- Los cinco eventos pivote y las seis fronteras emergentes son el insumo del Candidate Context Discovery de la sección 4.1.1.1.
+
+**URL del board en FigJam:** [OsoSense - Strategic DDD (Persona 3)](https://www.figma.com/board/IKkiZBJVEPP7dJKERzuDQJ/OsoSense---Strategic-DDD--Persona-3-?node-id=0-1&t=JmLMs0KXFXlRHfkK-1)
 
 ## 2.5. Ubiquitous Language
 
