@@ -428,6 +428,79 @@ Estas herramientas ayudan a traducir los datos de campo en perfiles accionables,
 <p><em>Figura. User Persona 1: Diego Ramos.</em></p>
 </div>
 
+**Persona 2:** Asesora técnica agrícola independiente
+- **Nombre:** María Fernanda Salazar
+- **Edad:** 32 años
+- **Ocupación:** Ingeniera agrónoma y asesora técnica independiente
+- **Ubicación:** Costa norte del Perú
+- **Rol:** Asesora a pequeños y medianos productores agrícolas y supervisa sus parcelas
+- **Perfil:** Es una profesional técnica que atiende a varios productores y necesita información confiable para evaluar el suelo, recomendar acciones de manejo y dar seguimiento a los cultivos. Tiene facilidad para interpretar datos agronómicos, pero requiere información organizada y disponible para comparar diferentes parcelas.
+- **Background:** María Fernanda trabaja con productores de diferentes zonas agrícolas de la costa norte. Debido a que atiende varias parcelas, debe organizar sus visitas y desplazarse constantemente. Utiliza análisis de laboratorio y medidores portátiles de conductividad eléctrica para revisar el estado del suelo. Los problemas que encuentra con mayor frecuencia son la salinidad, la falta de nutrientes, el riego inadecuado y las dificultades de drenaje. Para comprobar si una recomendación funciona, compara las mediciones con la evolución del cultivo.
+
+**Tecnologías:**
+* Smartphone Android.
+* WhatsApp y llamadas telefónicas.
+* Medidor portátil de conductividad eléctrica.
+* Análisis de laboratorio.
+* Aplicaciones móviles.
+* Internet móvil.
+* Hojas de cálculo o registros digitales.
+* Plataforma web para consultar reportes e históricos.
+
+**Skills:**
+* Interpretación de conductividad eléctrica.
+* Identificación de problemas de salinidad.
+* Análisis de resultados de laboratorio.
+* Diagnóstico de problemas de riego y drenaje.
+* Recomendación de acciones agrícolas.
+* Seguimiento de cultivos.
+* Comparación de datos históricos.
+* Comunicación con productores.
+* Organización de visitas a parcelas.
+
+**Motivaciones:**
+* Ayudar a prevenir pérdidas agrícolas.
+* Mejorar la calidad de sus recomendaciones.
+* Ahorrar tiempo en desplazamientos.
+* Contar con información actualizada de cada parcela.
+* Aumentar la confianza de sus clientes.
+
+**Frustraciones:**
+* No puede visitar todas las parcelas con la frecuencia necesaria.
+* Las mediciones portátiles son puntuales y no muestran una tendencia continua.
+* La información de cada productor puede estar dispersa.
+* Le cuesta observar tendencias de largo plazo.
+* Puede enterarse tarde de un cambio en el suelo.
+* Necesita validar la información antes de recomendar una acción.
+
+**Objetivos:**
+* Supervisar varias parcelas con menos desplazamientos.
+* Detectar aumentos de salinidad oportunamente.
+* Sustentar sus recomendaciones con datos.
+* Comparar el estado de diferentes parcelas.
+* Atender a más productores de manera eficiente.
+
+**Necesidades:**
+* Alertas tempranas sobre aumentos de salinidad.
+* Historial y tendencia de las mediciones.
+* Ubicación y fecha de cada lectura.
+* Comparación entre parcelas.
+* Reportes exportables para compartir con productores.
+* Información validada y confiable.
+* Acceso desde celular y computadora.
+* Datos técnicos acompañados de una explicación resumida.
+
+**Problema principal:**
+> María Fernanda atiende varias parcelas y no puede visitarlas con la frecuencia necesaria. Sin monitoreo continuo, puede detectar un problema de salinidad cuando ya está afectando al cultivo.
+
+**Quote representativa:**
+> "Necesito ver cómo está evolucionando cada parcela para decidir dónde debo intervenir primero."
+
+<div align="center">
+<img src="../assets/user-persona/userpersona2.png" alt="User Persona 2: María Fernanda Salazar" width="800">
+<p><em>Figura. User Persona 2: María Fernanda Salazar.</em></p>
+</div>
+
 ### 2.3.2. User Task Matrix
 
 ### 2.3.3. User Journey Mapping
