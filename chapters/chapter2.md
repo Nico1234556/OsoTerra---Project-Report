@@ -512,6 +512,11 @@ Estas herramientas ayudan a traducir los datos de campo en perfiles accionables,
 <p><em>Figura. Empathy Map 1: Diego Ramos.</em></p>
 </div>
 
+<div align="center">
+<img src="../assets/empathy-maps/Empathy%20map%202.png" alt="Empathy Map 2: María Fernanda Salazar" width="900">
+<p><em>Figura. Empathy Map 2: María Fernanda Salazar.</em></p>
+</div>
+
 ## 2.4. Big Picture EventStorming
 
 El equipo realizó un Big Picture EventStorming para comprender el dominio completo de OsoTerra IoT antes de especificar requisitos y diseñar la solución. El objetivo fue construir una visión compartida del negocio de monitoreo de salinidad del suelo: qué ocurre desde que un productor o un asesor técnico llega a la plataforma hasta que se toma una acción correctiva en la parcela, qué personas y sistemas participan, dónde están los principales problemas y qué oportunidades puede aprovechar la solución.
