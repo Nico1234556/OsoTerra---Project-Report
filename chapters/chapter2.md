@@ -359,6 +359,40 @@ Las entrevistas se realizaron para conocer de primera mano cómo los usuarios ob
 
 ### 2.3.1. User Personas
 
+Como parte del análisis del proceso de needfinding, se desarrollaron user personas representativos de los dos segmentos principales de la solución: los pequeños y medianos productores agropecuarios, y los ingenieros agrónomos o asesores técnicos independientes. Estas personas sintetizan las características clave obtenidas a partir del análisis cualitativo de las entrevistas, tales como comportamientos recurrentes, motivaciones, frustraciones y objetivos frente a la gestión de los cultivos.
+
+Estas herramientas ayudan a traducir los datos de campo en perfiles accionables, orientando las decisiones estratégicas sobre las funcionalidades y la priorización técnica del producto. Las personas creadas reflejan las necesidades urgentes de detección temprana, accesibilidad tecnológica y monitoreo continuo, facilitando un diseño más empático, comprensible y efectivo para OsoSense.
+
+**Persona 1:** Productor Agrícola Tradicional
+- **Nombre:** José Gutierrez
+- **Edad:** 55 años
+- **Ocupación:** Pequeño productor agropecuario de arroz/maíz (< 5 hectáreas)
+- **Ubicación:** Valle agrícola del Chira, Piura
+- **Perfil:** Administra su parcela basándose en la experiencia heredada y prácticas convencionales. Es pragmático, adverso al riesgo y muy cauteloso con su inversión. Su alfabetización digital es básica (centrada en WhatsApp y Facebook en un smartphone de gama de entrada). Confía firmemente en el criterio de sus asesores técnicos presenciales antes que en la innovación tecnológica por sí sola.
+- **Background:** Tras años de trabajo en el campo, Don José depende de su intuición y del riego poco tecnificado para manejar su cultivo, el cual representa el único sustento económico de su familia al no contar con acceso a crédito formal. Jamás ha realizado un análisis de suelo porque los laboratorios implican costos elevados por muestra y tiempos de espera de varias semanas. Actualmente, gestiona su campo "a ciegas" respecto al avance de la salinización, reaccionando únicamente cuando el marchitamiento de las plantas ya es un problema irreversible en la campaña.
+
+**Motivaciones:**
+* Proteger la inversión económica de su actual campaña agrícola (su principal fuente de ingresos familiares).
+* Sentir mayor certidumbre y control sobre el rendimiento de su tierra, dejando de depender de la suerte o la intuición.
+* Evitar el gasto inútil en fertilizantes o agua extra, el cual ocurre cuando asume erróneamente las causas del bajo rendimiento.
+* Contar con el respaldo y la validación de un ingeniero agrónomo que certifique que las herramientas que usa realmente funcionan.
+
+**Frustraciones:**
+* Detectar los efectos perjudiciales de la salinidad únicamente cuando el daño ya es visible en el menor vigor de sus plantas o en los parches secos de la parcela.
+* Percibir que las soluciones actuales de agricultura de precisión son inalcanzables, complejas y están diseñadas exclusivamente para la gran agroexportación.
+* Verse obligado a tomar decisiones críticas sobre riego o aplicación de agroquímicos basándose únicamente en síntomas reactivos y no en datos actuales.
+
+**Objetivos:**
+* Identificar el riesgo de salinización de manera temprana para ejecutar acciones correctivas antes de que se comprometa toda la cosecha.
+* Recibir alertas del suelo traducidas a un lenguaje visual, directo y accionable (ej. sistema de semáforos), sin tener que interpretar medidas técnicas como la conductividad eléctrica.
+* Lograr diferenciar con exactitud si la pérdida de productividad de sus plantas se debe a la acumulación de sales o a la falta de nutrientes.
+* Acceder a una tecnología de bajo costo que incluya un plan gratuito inicial, permitiéndole probar el servicio en una parcela sin asumir barreras económicas de entrada.
+
+<p>
+
+![](https://i.imgur.com/t3BF22L.png)
+
+
 ### 2.3.2. User Task Matrix
 
 ### 2.3.3. User Journey Mapping
